@@ -4,8 +4,11 @@
 
 ## 📚 Documentation
 
-[Note Link](src/doc/notes.md)
+#### [Project Note Link](src/doc/notes.md)
 
+> 原始相關連結
+
+[Exam Doc Link](https://hackmd.io/@K3McaeljRzKsNJlNx6ztew/SydeQUxe2)
 [API Doc Link](https://github.com/HR202108/web-exam-api)
 
 ## Recommended IDE Setup
@@ -19,23 +22,31 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ## 🚀 Project Setup & Quick Start
 
 ```sh
+
 npm install
+
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+
+npm run  dev
+
 ```
 
 ### Compile and Minify for Production
 
 ```sh
-npm run build
+
+npm run  build
+
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-npm run lint
+
+npm run  lint
+
 ```
