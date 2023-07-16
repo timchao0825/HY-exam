@@ -4,7 +4,7 @@
 
 ## 📚 Documentation
 
-#### [Project Note Link](src/doc/notes.md)
+#### [Project Note Link](doc/notes.md)
 
 > 原始相關連結
 
