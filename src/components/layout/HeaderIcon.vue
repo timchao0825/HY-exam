@@ -7,5 +7,6 @@
   position: fixed;
   right: 16px;
   top: 16px;
+  z-index: 5;
 }
 </style>
