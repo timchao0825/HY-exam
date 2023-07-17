@@ -24,7 +24,11 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ```sh
 
-npm install
+❗️❗️注意事項❗️❗️
+因 video.js 與  @videojs-player/vue，npm會跑出模組相衝突的錯誤
+要修正錯誤請將npm install指令改為npm install --force
+
+npm install --force
 
 ```
 
