@@ -20,5 +20,7 @@ main {
   left: 50%;
   top: 0;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
 }
 </style>

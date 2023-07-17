@@ -33,7 +33,6 @@
 }
 
 body {
-  min-height: 100vh;
   color: #fff;
   background: #000;
   line-height: 1.6;
@@ -47,7 +46,6 @@ body {
 .main-wrap {
   /* 扣掉固定footer的高度 */
   width: 100%;
-  height: calc(100vh - 50px);
-  left: 0;
-  top: 0;
+  max-height: calc(100vh - 50px);
+  flex: 1;
 }

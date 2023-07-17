@@ -1,3 +1,3 @@
 <template>
-  <div class="main-wrap fixed">Discover view</div>
+  <div class="main-wrap">Discover view</div>
 </template>

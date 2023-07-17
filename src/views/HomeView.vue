@@ -1,6 +1,6 @@
 <template>
   <HeaderNavTab />
-  <div class="main-wrap fixed">
+  <div class="main-wrap">
     <swiper
       v-show="navTabActive === 'following'"
       class="followingSwiper h-full"

@@ -30,6 +30,9 @@
         <img class="w-[50px] h-[50px]" :src="playIcon" alt="" srcset="" />
       </div>
     </div>
+    <div class="progress-bar" @click="toggleProgressBar($event)">
+      <div class="length" :style="`width: ${progressBar}%`"></div>
+    </div>
   </div>
 </template>
 
@@ -39,9 +42,9 @@ import playIcon from '../../images/play-icon.png'
 import videojs from 'video.js'
 const props = defineProps(['cover', 'source', 'videoState'])
 const player = shallowRef()
-const isVideoPlay = ref(false)
-
 const isSafari = videojs.browser.IS_SAFARI
+const isVideoPlay = ref(false)
+const progressBar = ref(0)
 
 watch(
   () => props.videoState,
@@ -66,6 +69,24 @@ const handleReady = () => {
   vhs.xhr.beforeRequest = (options) => {
     return options
   }
+
+  player.value.on('timeupdate', function () {
+    updateProgressBar()
+  })
+}
+
+const updateProgressBar = () => {
+  const currentTime = player.value.currentTime()
+  const durationTime = player.value.duration()
+  progressBar.value = (currentTime / durationTime) * 100
+}
+
+const toggleProgressBar = (e) => {
+  const barWidth = e.target.clientWidth
+  const clickX = e.clientX
+  const duration = player.value.duration()
+  const targetTime = (clickX / barWidth) * duration
+  player.value.currentTime(targetTime)
 }
 
 const toggleVideo = () => {
@@ -96,6 +117,20 @@ const toggleVideo = () => {
     position: absolute;
     top: 0;
     left: 0;
+  }
+}
+.progress-bar {
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background: #eee;
+  .length {
+    width: 0;
+    height: 100%;
+    background: red;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <footer class="fixed w-full h-[50px] flex justify-around items-center">
+  <footer class="w-full h-[50px] flex justify-around items-center">
     <RouterLink
       to="/"
       class="cursor-pointer w-full h-full flex justify-center items-center transition-all duration-300"
@@ -26,8 +26,7 @@ const routeName = computed(() => router.currentRoute.value.name)
 
 <style lang="scss" scoped>
 footer {
-  left: 0;
-  bottom: 0;
+  flex: 0 0 auto;
   border-top: 1px solid rgba(255, 255, 255, 0.4);
   a {
     color: var(--color-gray);
