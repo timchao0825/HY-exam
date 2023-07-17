@@ -20,6 +20,7 @@
         nativeVideoTracks: false
       }"
       @mounted="handleMounted"
+      @ready="handleReady"
     />
     <div class="cover" @click="toggleVideo">
       <div
@@ -35,9 +36,12 @@
 <script setup>
 import { ref, shallowRef, watch } from 'vue'
 import playIcon from '../../images/play-icon.png'
+import videojs from 'video.js'
 const props = defineProps(['cover', 'source', 'videoState'])
 const player = shallowRef()
 const isVideoPlay = ref(false)
+
+const isSafari = videojs.browser.IS_SAFARI
 
 watch(
   () => props.videoState,
@@ -54,6 +58,14 @@ watch(
 
 const handleMounted = (payload) => {
   player.value = payload.player
+}
+
+const handleReady = () => {
+  // https://github.com/videojs/http-streaming#vhsxhr
+  const { vhs } = player.value?.tech()
+  vhs.xhr.beforeRequest = (options) => {
+    return options
+  }
 }
 
 const toggleVideo = () => {
