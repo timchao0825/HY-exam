@@ -30,6 +30,7 @@
         <img class="w-[50px] h-[50px]" :src="playIcon" alt="" srcset="" />
       </div>
     </div>
+    <!-- TODO: safari vue bind style not reactive -->
     <div class="progress-bar" @click="toggleProgressBar($event)">
       <div class="length" :style="`width: ${progressBar}%`"></div>
     </div>
@@ -83,9 +84,11 @@ const updateProgressBar = () => {
 
 const toggleProgressBar = (e) => {
   const barWidth = e.target.clientWidth
-  const clickX = e.layerX
+
+  const elRect = e.target.getBoundingClientRect()
+  const offsetX = isSafari ? e.clientX + elRect.left : e.clientX - elRect.left
   const duration = player.value.duration()
-  const targetTime = (clickX / barWidth) * duration
+  const targetTime = (offsetX / barWidth) * duration
   player.value.currentTime(targetTime)
 }
 
