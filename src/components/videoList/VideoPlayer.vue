@@ -83,7 +83,7 @@ const updateProgressBar = () => {
 
 const toggleProgressBar = (e) => {
   const barWidth = e.target.clientWidth
-  const clickX = e.clientX
+  const clickX = e.layerX
   const duration = player.value.duration()
   const targetTime = (clickX / barWidth) * duration
   player.value.currentTime(targetTime)
