@@ -1,12 +1,15 @@
-import { defineStore } from 'pinia'
-
-export const useLayoutStore = defineStore('layout', {
-  state: () => {
-    return { navTab: 'following' }
+import { createStore } from 'vuex'
+const layoutStore = createStore({
+  state() {
+    return {
+      navTab: 'following'
+    }
   },
-  actions: {
-    toggleNavTab(tagName) {
-      this.navTab = tagName
+  mutations: {
+    toggleNavTab(state, payload) {
+      state.navTab = payload
     }
   }
 })
+
+export default layoutStore
