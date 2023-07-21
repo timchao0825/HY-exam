@@ -31,9 +31,9 @@
       </div>
     </div>
     <!-- TODO: safari vue bind style not reactive -->
-    <div class="progress-bar" @click="toggleProgressBar($event)">
+    <!-- <div class="progress-bar" @click="toggleProgressBar($event)">
       <div class="length" :style="`width: ${progressBar}%`"></div>
-    </div>
+    </div> -->
   </div>
 </template>
 

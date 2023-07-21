@@ -1,5 +1,5 @@
 <template>
-  <main class="max-w-[414px] w-full h-[100vh] fixed">
+  <main class="max-w-[414px] w-full fixed">
     <Header />
     <RouterView />
     <Footer />
@@ -7,9 +7,20 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import Header from './components/layout/Header.vue'
 import Footer from './components/layout/Footer.vue'
+
+onMounted(() => {
+  window.addEventListener('resize', documentHeight)
+  documentHeight()
+})
+
+const documentHeight = () => {
+  const doc = document.documentElement
+  doc.style.setProperty('--doc-height', `${window.innerHeight}px`)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -22,5 +33,6 @@ main {
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
+  height: var(--doc-height);
 }
 </style>

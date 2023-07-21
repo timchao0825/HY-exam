@@ -1,30 +1,29 @@
 <template>
-  <nav class="header-nav-tag flex items-center text-base font-medium">
-    <div
+  <div class="header-nav-tag flex items-center text-base font-medium">
+    <a
       class="nav-tag relative cursor-pointer font-black text-[18px] mr-5 transition-all duration-300"
+      :class="{ active: navTab === 'following' }"
       @click="toggleNavTab('following')"
-      :class="{ active: navTabActive === 'following' }"
     >
       Following
-    </div>
-    <div
+    </a>
+    <a
       class="nav-tag relative cursor-pointer font-black text-[18px] transition-all duration-300"
+      :class="{ active: navTab === 'foryou' }"
       @click="toggleNavTab('foryou')"
-      :class="{ active: navTabActive === 'foryou' }"
     >
       For You
-    </div>
-  </nav>
+    </a>
+  </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import { useLayoutStore } from '@/stores/layout'
-const store = useLayoutStore()
-// following or foryou list
-const navTabActive = computed(() => store.navTab)
+import { useStore } from 'vuex'
+const store = useStore()
+const navTab = computed(() => store.state.navTab)
 const toggleNavTab = (tabName) => {
-  store.toggleNavTab(tabName)
+  store.commit('toggleNavTab', tabName)
 }
 </script>
 
