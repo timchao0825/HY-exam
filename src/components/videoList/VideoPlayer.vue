@@ -5,7 +5,7 @@
       crossorigin="anonymous"
       playsinline
       :poster="props.cover"
-      :sources="props.source"
+      :src="props.source"
       :control-bar="{
         progressControl: false,
         currentTimeDisplay: false,
@@ -35,10 +35,10 @@
         ref="audioProgressBar"
         class="progress"
         type="range"
-        :slot-scope="audioPercent"
         min="0"
         max="100"
         step="0.001"
+        :value="audioPercent"
         @input="audioInput"
         @mousedown="startAudioDrag"
         @mouseup="endAudioDrag"
@@ -76,12 +76,6 @@ const handleMounted = (payload) => {
 }
 
 const handleReady = () => {
-  // https://github.com/videojs/http-streaming#vhsxhr
-  const { vhs } = player.value?.tech()
-  vhs.xhr.beforeRequest = (options) => {
-    return options
-  }
-
   player.value.on('timeupdate', function () {
     updateProgressBar()
   })
@@ -111,20 +105,24 @@ const endAudioDrag = (e) => {
   const targetValue = e.target.value
   const duration = player.value.duration()
   const percentTime = ((targetValue * duration) / 100).toFixed(2)
-
   player.value.currentTime(percentTime)
   player.value?.play()
   isVideoPlay.value = true
 }
 
 const toggleVideo = () => {
-  const playerPaused = player.value?.paused()
-  if (playerPaused) {
-    player.value?.play()
-    isVideoPlay.value = true
-  } else {
-    player.value?.pause()
-    isVideoPlay.value = false
+  const playerValue = player.value
+
+  if (playerValue) {
+    const isPaused = playerValue.paused()
+
+    if (isPaused) {
+      playerValue.play()
+      isVideoPlay.value = true
+    } else {
+      playerValue.pause()
+      isVideoPlay.value = false
+    }
   }
 }
 </script>
@@ -169,19 +167,12 @@ const toggleVideo = () => {
     outline: none;
     box-shadow: none;
     border: none;
-    display: none;
-    -webkit-appearance: none;
-    width: 0;
-    height: 0;
   }
   .progress::-moz-range-thumb {
     opacity: 0;
     outline: none;
     box-shadow: none;
     border: none;
-    display: none;
-    width: 0;
-    height: 0;
   }
 }
 </style>
