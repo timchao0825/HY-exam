@@ -30,10 +30,20 @@
         <img class="w-[50px] h-[50px]" :src="playIcon" alt="" srcset="" />
       </div>
     </div>
-    <!-- TODO: safari vue bind style not reactive -->
-    <!-- <div class="progress-bar" @click="toggleProgressBar($event)">
-      <div class="length" :style="`width: ${progressBar}%`"></div>
-    </div> -->
+    <div class="progress-bar">
+      <input
+        ref="audioProgressBar"
+        class="progress"
+        type="range"
+        :slot-scope="audioPercent"
+        min="0"
+        max="100"
+        step="0.001"
+        @input="audioInput"
+        @mousedown="startAudioDrag"
+        @mouseup="endAudioDrag"
+      />
+    </div>
   </div>
 </template>
 
@@ -45,7 +55,8 @@ const props = defineProps(['cover', 'source', 'videoState'])
 const player = shallowRef()
 const isSafari = videojs.browser.IS_SAFARI
 const isVideoPlay = ref(false)
-const progressBar = ref(0)
+const audioPercent = ref(0)
+const audioProgressBar = ref(null)
 
 watch(
   () => props.videoState,
@@ -79,17 +90,31 @@ const handleReady = () => {
 const updateProgressBar = () => {
   const currentTime = player.value.currentTime()
   const durationTime = player.value.duration()
-  progressBar.value = (currentTime / durationTime) * 100
+  const percentTime = ((currentTime / durationTime) * 100).toFixed(2)
+  audioPercent.value = percentTime
+  audioProgressBar.value.style.background = `linear-gradient(to right, red 0%, red ${percentTime}%, #DDDDDD ${percentTime}%, #DDDDDD 100%)`
 }
 
-const toggleProgressBar = (e) => {
-  const barWidth = e.target.clientWidth
-
-  const elRect = e.target.getBoundingClientRect()
-  const offsetX = isSafari ? e.clientX + elRect.left : e.clientX - elRect.left
+const audioInput = (e) => {
+  const targetValue = e.target.value
   const duration = player.value.duration()
-  const targetTime = (offsetX / barWidth) * duration
-  player.value.currentTime(targetTime)
+  const percentTime = (targetValue * duration) / 100
+  player.value.currentTime(percentTime)
+}
+
+const startAudioDrag = () => {
+  player.value.pause()
+  isVideoPlay.value = false
+}
+
+const endAudioDrag = (e) => {
+  const targetValue = e.target.value
+  const duration = player.value.duration()
+  const percentTime = ((targetValue * duration) / 100).toFixed(2)
+
+  player.value.currentTime(percentTime)
+  player.value?.play()
+  isVideoPlay.value = true
 }
 
 const toggleVideo = () => {
@@ -123,17 +148,40 @@ const toggleVideo = () => {
   }
 }
 .progress-bar {
-  z-index: 3;
-  position: fixed;
+  width: 100%;
+  position: absolute;
+  z-index: 10;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 12px;
-  background: #eee;
-  .length {
+  .progress {
+    -webkit-appearance: none;
+    display: block;
+    width: 100%;
+    height: 10px;
+    border: none;
+    outline: none;
+    transition: background 0.45s ease-in;
+    cursor: pointer;
+  }
+
+  .progress::-webkit-slider-thumb {
+    opacity: 0;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    display: none;
+    -webkit-appearance: none;
     width: 0;
-    height: 100%;
-    background: red;
+    height: 0;
+  }
+  .progress::-moz-range-thumb {
+    opacity: 0;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    display: none;
+    width: 0;
+    height: 0;
   }
 }
 </style>

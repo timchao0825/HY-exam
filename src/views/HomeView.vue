@@ -1,7 +1,7 @@
 <template>
   <HeaderNavTab />
   <div class="main-wrap">
-    <!-- <swiper
+    <swiper
       v-show="navTabActive === 'following'"
       class="followingSwiper h-full"
       :direction="'vertical'"
@@ -23,7 +23,7 @@
         <VideoPlayer :videoState="list.videoState" :cover="list.cover" :source="list.play_url" />
         <span class="video-title">{{ list.title }}</span>
       </swiper-slide>
-    </swiper> -->
+    </swiper>
   </div>
 </template>
 
@@ -47,71 +47,71 @@ const navTabActive = computed(() => store.state.navTab)
 const recordFollowingList = ref([])
 const recordForyouList = ref([])
 
-// watch(
-//   () => store.state.navTab,
-//   (newTab, oldTab) => {
-//     if (newTab === 'foryou') {
-//       // record following list play number
-//       followingData.value.forEach((el, idx) => {
-//         if (el.videoState === 'play') {
-//           recordFollowingList.value = ['following', idx]
-//           el.videoState = 'pause'
-//         }
-//       })
-//       // set for you list play
-//       if (recordForyouList.value.length !== 0) {
-//         const targetPlayerNum = recordForyouList.value[1]
-//         foryouData.value[targetPlayerNum].videoState = 'play'
-//       } else {
-//         // no data , start from 0
-//         const targetPlayerNum = 0
-//         foryouData.value[targetPlayerNum].videoState = 'play'
-//       }
-//     }
+watch(
+  () => store.state.navTab,
+  (newTab, oldTab) => {
+    if (newTab === 'foryou') {
+      // record following list play number
+      followingData.value.forEach((el, idx) => {
+        if (el.videoState === 'play') {
+          recordFollowingList.value = ['following', idx]
+          el.videoState = 'pause'
+        }
+      })
+      // set for you list play
+      if (recordForyouList.value.length !== 0) {
+        const targetPlayerNum = recordForyouList.value[1]
+        foryouData.value[targetPlayerNum].videoState = 'play'
+      } else {
+        // no data , start from 0
+        const targetPlayerNum = 0
+        foryouData.value[targetPlayerNum].videoState = 'play'
+      }
+    }
 
-//     if (newTab === 'following') {
-//       foryouData.value.forEach((el, idx) => {
-//         if (el.videoState === 'play') {
-//           recordForyouList.value = ['foryou', idx]
-//           el.videoState = 'pause'
-//         }
-//       })
-//       if (recordFollowingList.value.length !== 0) {
-//         const targetPlayerNum = recordFollowingList.value[1]
-//         followingData.value[targetPlayerNum].videoState = 'play'
-//       } else {
-//         // no data , start from 0
-//         const targetPlayerNum = 0
-//         followingData.value[targetPlayerNum].videoState = 'play'
-//       }
-//     }
-//   }
-// )
+    if (newTab === 'following') {
+      foryouData.value.forEach((el, idx) => {
+        if (el.videoState === 'play') {
+          recordForyouList.value = ['foryou', idx]
+          el.videoState = 'pause'
+        }
+      })
+      if (recordFollowingList.value.length !== 0) {
+        const targetPlayerNum = recordFollowingList.value[1]
+        followingData.value[targetPlayerNum].videoState = 'play'
+      } else {
+        // no data , start from 0
+        const targetPlayerNum = 0
+        followingData.value[targetPlayerNum].videoState = 'play'
+      }
+    }
+  }
+)
 
-// const onSlideChange = (swiper) => {
-//   const activeIndex = swiper.activeIndex
-//   const swiperClassName = swiper.el.className
+const onSlideChange = (swiper) => {
+  const activeIndex = swiper.activeIndex
+  const swiperClassName = swiper.el.className
 
-//   const videoData = getVideoData(swiperClassName)
-//   if (videoData) {
-//     updateVideoState(videoData, activeIndex)
-//   }
-// }
+  const videoData = getVideoData(swiperClassName)
+  if (videoData) {
+    updateVideoState(videoData, activeIndex)
+  }
+}
 
-// const getVideoData = (className) => {
-//   if (className.includes('followingSwiper')) {
-//     return followingData.value
-//   } else if (className.includes('foryouSwiper')) {
-//     return foryouData.value
-//   }
-//   return null
-// }
+const getVideoData = (className) => {
+  if (className.includes('followingSwiper')) {
+    return followingData.value
+  } else if (className.includes('foryouSwiper')) {
+    return foryouData.value
+  }
+  return null
+}
 
-// const updateVideoState = (data, idx) => {
-//   data.forEach((el, i) => {
-//     el.videoState = idx === i ? 'play' : 'pause'
-//   })
-// }
+const updateVideoState = (data, idx) => {
+  data.forEach((el, i) => {
+    el.videoState = idx === i ? 'play' : 'pause'
+  })
+}
 
 onMounted(async () => {
   try {
